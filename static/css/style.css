@@ -1,0 +1,317 @@
+/* ==========================================================================
+   S.I.S.V. La Paz - Premium Dashboard Styles
+   ========================================================================== */
+
+:root {
+    --bg-main: #0B0F19;
+    --bg-panel: rgba(19, 26, 42, 0.7);
+    --border-glass: rgba(255, 255, 255, 0.08);
+    --text-main: #E2E8F0;
+    --text-muted: #94A3B8;
+    
+    --accent-neon: #38BDF8;
+    --accent-glow: rgba(56, 189, 248, 0.4);
+    --success: #10B981;
+    --danger: #EF4444;
+    --warning: #F59E0B;
+
+    --font-ui: 'Inter', sans-serif;
+    --font-heading: 'Outfit', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: var(--font-ui);
+    min-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-image: 
+        radial-gradient(circle at 15% 50%, rgba(56, 189, 248, 0.08), transparent 25%),
+        radial-gradient(circle at 85% 30%, rgba(16, 185, 129, 0.05), transparent 25%);
+}
+
+.app-container {
+    display: flex;
+    min-height: 100vh;
+    padding: 20px;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* ─── SIMULATION PANEL (LEFT) ────────────────────────────────────────── */
+.simulation-panel {
+    flex: 1 1 600px;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-glass);
+    border-radius: 24px;
+    backdrop-filter: blur(12px);
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.sim-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 30px;
+    border-bottom: 1px solid var(--border-glass);
+}
+
+.logo h1 {
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+.logo span {
+    color: var(--accent-neon);
+    font-weight: 400;
+}
+
+.badge.live {
+    font-size: 0.75rem;
+    color: var(--danger);
+    font-weight: 700;
+    letter-spacing: 1px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+.btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-glass);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-family: var(--font-ui);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-1px);
+}
+.btn-primary {
+    background: var(--accent-neon);
+    color: #000;
+    border: none;
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+.btn-primary:hover {
+    background: #7DD3FC;
+    box-shadow: 0 0 25px var(--accent-glow);
+}
+
+.canvas-container {
+    flex: 1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #1A2234; /* Darker asphalt background */
+    overflow: hidden;
+}
+
+canvas {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.sim-footer {
+    padding: 15px 30px;
+    border-top: 1px solid var(--border-glass);
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Traffic Light Overlays */
+.tl-overlay {
+    position: absolute;
+    background: #111;
+    padding: 4px;
+    border-radius: 10px;
+    display: flex;
+    gap: 4px;
+    border: 2px solid #333;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.8);
+}
+.tl-top { top: 15%; left: 40%; transform: rotate(90deg); }
+.tl-bottom { bottom: 15%; right: 40%; transform: rotate(90deg); }
+.tl-left { left: 15%; top: 55%; }
+.tl-right { right: 15%; top: 38%; }
+
+.light {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #333;
+    opacity: 0.3;
+    transition: all 0.3s ease;
+}
+.light.red.active { background: #FF3B30; opacity: 1; box-shadow: 0 0 15px #FF3B30; }
+.light.yellow.active { background: #FFCC00; opacity: 1; box-shadow: 0 0 15px #FFCC00; }
+.light.green.active { background: #34C759; opacity: 1; box-shadow: 0 0 15px #34C759; }
+
+/* ─── AI MONITOR PANEL (RIGHT SIDEBAR) ───────────────────────────────── */
+.ai-panel {
+    width: 380px;
+    flex: 1 1 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding-right: 5px; /* for scrollbar */
+}
+
+.ai-panel h2 {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    margin-bottom: 2px;
+}
+.ai-panel .subtitle {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 15px;
+}
+
+.glass-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-glass);
+    border-radius: 16px;
+    padding: 20px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+}
+
+.glass-card h3 {
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    margin-bottom: 15px;
+    color: var(--accent-neon);
+}
+
+/* Status Card */
+.status-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+.status-row:last-child { margin-bottom: 0; }
+.value.success { color: var(--success); font-weight: 600; }
+.value.accent { color: var(--accent-neon); font-weight: 600; }
+
+/* Confidence Circle Chart */
+.confidence-circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 120px;
+    margin-top: 10px;
+}
+.circular-chart {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+.circle-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.1);
+    stroke-width: 2.8;
+}
+.circle {
+    fill: none;
+    stroke-width: 2.8;
+    stroke-linecap: round;
+    transition: stroke-dasharray 1s ease-out, stroke 0.5s ease;
+}
+/* Colors dynamically applied in JS based on confidence */
+.percentage {
+    fill: #fff;
+    font-family: var(--font-heading);
+    font-size: 0.5em;
+    font-weight: bold;
+    text-anchor: middle;
+}
+
+/* Sensor Grid */
+.sensor-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+.sensor-item {
+    background: rgba(0,0,0,0.2);
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+.sensor-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+}
+.sensor-val {
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: var(--font-heading);
+}
+
+/* Probability Bars */
+.bar-container {
+    margin-bottom: 12px;
+}
+.bar-label {
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+    color: var(--text-main);
+}
+.bar-track {
+    width: 100%;
+    height: 8px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 4px;
+    overflow: hidden;
+}
+.bar-fill {
+    height: 100%;
+    background: var(--accent-neon);
+    border-radius: 4px;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.2);
+    border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255,255,255,0.3);
+}

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Inteligente De Semáforos y Vigilancia Para La Seguridad Vial En La Paz</title>
+    <!-- Google Fonts for modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- SIMULATION PANEL -->
+        <main class="simulation-panel">
+            <header class="sim-header">
+                <div class="logo">
+                    <h1 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.5px;">Sistema Inteligente De Semáforos y Vigilancia<br>Para La Seguridad Vial En La Paz</h1>
+                    <div style="font-size: 0.85rem; color: var(--accent-neon); margin-top: 5px; font-family: var(--font-ui);">
+                        Desarrollado por Johan Misme Flores y Eyder Quenta Quispe
+                        <span class="badge live" style="margin-left: 15px;">● EN VIVO</span>
+                    </div>
+                </div>
+                <div class="controls">
+                    <button id="btn-toggle-sim" class="btn btn-primary">Pausar Simulación</button>
+                </div>
+            </header>
+
+            <div class="canvas-container">
+                <canvas id="sim-canvas" width="800" height="600"></canvas>
+                
+                <!-- On-canvas Traffic Light Overlays -->
+                <div class="tl-overlay tl-top" id="tl-0">
+                    <div class="light red"></div><div class="light yellow"></div><div class="light green"></div>
+                </div>
+                <div class="tl-overlay tl-bottom" id="tl-1">
+                    <div class="light red"></div><div class="light yellow"></div><div class="light green"></div>
+                </div>
+                <div class="tl-overlay tl-left" id="tl-2">
+                    <div class="light red"></div><div class="light yellow"></div><div class="light green"></div>
+                </div>
+                <div class="tl-overlay tl-right" id="tl-3">
+                    <div class="light red"></div><div class="light yellow"></div><div class="light green"></div>
+                </div>
+            </div>
+            
+            <div class="sim-footer">
+                <p>Intersección: El Prado - INT-001</p>
+                <p id="timer-display">Siguiente decisión en: 0s</p>
+            </div>
+        </main>
+
+        <!-- AI MONITOR PANEL (SIDEBAR) -->
+        <aside class="ai-panel">
+            <h2>🧠 Monitor de Inteligencia Artificial</h2>
+            <p class="subtitle">Modelo activo: MLP Semáforo v1.0</p>
+
+            <div class="glass-card status-card">
+                <div class="status-row">
+                    <span>Estado del Servidor:</span>
+                    <span class="value success" id="server-status">Conectado</span>
+                </div>
+                <div class="status-row">
+                    <span>Fase Actual:</span>
+                    <span class="value accent" id="current-phase">Iniciando...</span>
+                </div>
+                <div class="status-row">
+                    <span>Tiempo Asignado:</span>
+                    <span class="value" id="current-time">-- s</span>
+                </div>
+            </div>
+
+            <div class="glass-card confidence-card">
+                <h3>Nivel de Confianza (Predicción)</h3>
+                <div class="confidence-circle">
+                    <svg viewBox="0 0 36 36" class="circular-chart">
+                        <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                        <path class="circle" id="confidence-arc" stroke-dasharray="0, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"/>
+                        <text x="18" y="20.35" class="percentage" id="confidence-text">0%</text>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="glass-card stats-card">
+                <h3>Sensores Simulados en Tiempo Real</h3>
+                <div class="sensor-grid">
+                    <div class="sensor-item">
+                        <span class="sensor-label">Autos N-S</span>
+                        <span class="sensor-val" id="val-ns">0</span>
+                    </div>
+                    <div class="sensor-item">
+                        <span class="sensor-label">Autos E-O</span>
+                        <span class="sensor-val" id="val-eo">0</span>
+                    </div>
+                    <div class="sensor-item">
+                        <span class="sensor-label">Velocidad Promedio</span>
+                        <span class="sensor-val" id="val-vel">0 km/h</span>
+                    </div>
+                    <div class="sensor-item">
+                        <span class="sensor-label">Densidad</span>
+                        <span class="sensor-val" id="val-den">Baja</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="glass-card probability-card">
+                <h3>Probabilidades Softmax (4 Fases)</h3>
+                <div class="bar-container">
+                    <div class="bar-label">0: N-S Verde</div>
+                    <div class="bar-track"><div class="bar-fill" id="prob-0" style="width: 0%;"></div></div>
+                </div>
+                <div class="bar-container">
+                    <div class="bar-label">1: E-O Verde</div>
+                    <div class="bar-track"><div class="bar-fill" id="prob-1" style="width: 0%;"></div></div>
+                </div>
+                <div class="bar-container">
+                    <div class="bar-label">2: Giro Protegido</div>
+                    <div class="bar-track"><div class="bar-fill" id="prob-2" style="width: 0%;"></div></div>
+                </div>
+                <div class="bar-container">
+                    <div class="bar-label">3: Peatonal</div>
+                    <div class="bar-track"><div class="bar-fill" id="prob-3" style="width: 0%;"></div></div>
+                </div>
+            </div>
+
+        </aside>
+    </div>
+
+    <!-- Cargar motor de simulación -->
+    <script src="{{ url_for('static', filename='js/simulacion.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+# Entornos virtuales
+venv/
+env/
+.venv/
+env_lapaz/
+
+# Python cache y compilados
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Base de datos SQLite
+instance/
+*.db
+*.sqlite3
+
+# Logs
+*.log
+
+# Entorno local e IDEs
+.vscode/
+.idea/
+.env
+
+# Modelos pesados (Opcional si quieres entrenar en la nube directamente)
+# models/saved_models/*.keras
